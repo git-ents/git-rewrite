@@ -8,3 +8,4 @@ license.workspace = true
 [dependencies]
 git2.workspace = true
 globset.workspace = true
+clap.workspace = true
