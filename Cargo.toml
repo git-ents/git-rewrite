@@ -4,7 +4,7 @@ members = [".", "plumbing/git-filter-tree", "xtask"]
 
 [workspace.package]
 edition = "2024"
-publish = false
+publish = true
 license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
