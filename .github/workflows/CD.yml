@@ -2,7 +2,7 @@ name: CD
 
 on:
   release:
-    types: [released]
+    types: [released, prereleased]
   workflow_dispatch:
 
 permissions:
@@ -31,4 +31,12 @@ jobs:
         with:
           subject-path: "target/package/*.crate"
       - name: Publish to crates.io
-        run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          IS_PRERELEASE: ${{ github.event.release.prerelease }}
+        run: |
+          if [ "$IS_PRERELEASE" = "true" ]; then
+            cargo publish --dry-run
+          else
+            cargo publish --token "$CARGO_REGISTRY_TOKEN"
+          fi
