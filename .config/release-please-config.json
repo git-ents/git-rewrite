@@ -24,10 +24,17 @@
           "jsonpath": "$.package.version"
         }
       ],
-
       "exclude-paths": ["plumbing/"]
     },
-    "plumbing/git-filter-tree": {}
+    "plumbing/git-filter-tree": {
+      "extra-files": [
+        {
+          "type": "toml",
+          "path": "Cargo.toml",
+          "jsonpath": "$.package.dependencies.git-filter-tree.version"
+        }
+      ]
+    }
   },
   "plugins": [{ "type": "sentence-case" }],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
