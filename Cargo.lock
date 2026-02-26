@@ -195,6 +195,7 @@ version = "0.0.0"
 dependencies = [
  "clap",
  "clap_mangen",
+ "git-filter-tree",
  "git2",
  "globset",
 ]
@@ -203,6 +204,7 @@ dependencies = [
 name = "git-filter-tree"
 version = "0.0.0"
 dependencies = [
+ "clap",
  "git2",
  "globset",
 ]
