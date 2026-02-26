@@ -32,7 +32,7 @@
       "extra-files": [
         {
           "type": "toml",
-          "path": "../../Cargo.toml",
+          "path": "Cargo.toml",
           "jsonpath": "$.dependencies.git-filter-tree.version"
         }
       ]
