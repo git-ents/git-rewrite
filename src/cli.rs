@@ -12,5 +12,5 @@ pub struct Cli {
 #[derive(clap::Subcommand)]
 pub enum Command {
     /// Filter Git tree entries by gitattributes-style patterns
-    FilterTree(FilterTreeArgs),
+    Tree(FilterTreeArgs),
 }

@@ -1,0 +1,12 @@
+[package]
+name = "xtask"
+version = "0.0.0"
+edition.workspace = true
+publish = false
+license.workspace = true
+
+[dependencies]
+clap.workspace = true
+clap_mangen.workspace = true
+git-filter-tree = { path = "../plumbing/git-filter-tree" }
+git-filter = { path = "../" }
