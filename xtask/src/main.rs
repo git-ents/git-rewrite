@@ -151,7 +151,7 @@ fn generate_man_pages(output_dir: &Path) -> std::io::Result<()> {
     println!("Generating man pages to: {}", man1_dir.display());
 
     generate_man::<git_filter_tree::cli::Cli>(&man1_dir, "git-filter-tree")?;
-    generate_man::<git_filter::cli::Cli>(&man1_dir, "git-filter")?;
+    generate_man::<git_filter_cli::cli::Cli>(&man1_dir, "git-filter")?;
 
     println!("✓ Man pages generated successfully!");
     Ok(())
