@@ -18,7 +18,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
 
     match cli.command {
-        Command::FilterTree(args) => filter_tree(&args.treeish, &args.patterns, args.format),
+        Command::Tree(args) => filter_tree(&args.treeish, &args.patterns, args.format),
     }
 }
 
