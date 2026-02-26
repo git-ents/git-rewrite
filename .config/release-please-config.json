@@ -16,7 +16,9 @@
   "packages": {
     ".": {
       "pull-request-title-pattern": "chore(release): v${version}",
-      "include-component-in-tag": false
+      "include-component-in-tag": false,
+      "extra-files": [{ "type": "toml", "path": "xtask/Cargo.toml" }],
+      "exclude-paths": ["plumbing/"]
     },
     "plumbing/git-filter-tree": {}
   },
