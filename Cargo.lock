@@ -200,6 +200,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "git-filter-tree"
+version = "0.0.0"
+dependencies = [
+ "git2",
+ "globset",
+]
+
+[[package]]
 name = "git2"
 version = "0.20.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"

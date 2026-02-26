@@ -17,7 +17,8 @@
     ".": {
       "pull-request-title-pattern": "chore(release): v${version}",
       "include-component-in-tag": false
-    }
+    },
+    "plumbing/git-filter-tree": {}
   },
   "plugins": [{ "type": "sentence-case" }],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
