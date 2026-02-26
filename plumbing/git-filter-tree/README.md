@@ -4,9 +4,10 @@
 
 ## Motivation
 
-When vendoring content from other Git repositories, you may want to filter the content you want with a `sparse-checkout`.
-This is supported by Git submodules out-of-the-box, but submodules require extra steps for contributors.
-Git subtrees are simpler for users —— they place content directly in the repository tree —— but they do not support `sparse-checkout`.
+When fetching content from upstream repositories, you may want to exclude specific patterns.
+You may use `sparse-checkout` in certain contexts, but this alone is not sufficient to arbitrarily select content across a repository.
+With the `git filter-tree` plumbing command, or with the `git_filter_tree` library, you can arbitrarily filter content in any Git tree.
+Repository boundaries are a myth!
 The `git-filter-tree` CLI (and accompanying `git_filter_tree` library) allows you to filter Git tree objects (tracked directories) by glob patterns.
 This functionality is used as *plumbing* for the primary application of this [project](/), `git-filter`.
 
