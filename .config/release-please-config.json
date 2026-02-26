@@ -32,8 +32,8 @@
       "extra-files": [
         {
           "type": "toml",
-          "path": "Cargo.toml",
-          "jsonpath": "$.package.dependencies.git-filter-tree.version"
+          "path": "../../Cargo.toml",
+          "jsonpath": "$.dependencies.git-filter-tree.version"
         }
       ]
     }
