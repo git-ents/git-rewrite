@@ -9,4 +9,4 @@ license.workspace = true
 clap.workspace = true
 clap_mangen.workspace = true
 git-filter-tree = { path = "../plumbing/git-filter-tree" }
-git-filter = { path = "../" }
+git-filter-cli = { path = "../" }

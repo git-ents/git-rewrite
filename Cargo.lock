@@ -190,7 +190,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "git-filter"
+name = "git-filter-cli"
 version = "0.0.0"
 dependencies = [
  "clap",
@@ -680,7 +680,7 @@ version = "0.0.0"
 dependencies = [
  "clap",
  "clap_mangen",
- "git-filter",
+ "git-filter-cli",
  "git-filter-tree",
 ]
 
