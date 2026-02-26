@@ -18,7 +18,7 @@ This functionality is used as *plumbing* for the primary application of this [pr
 The `git-filter-tree` plumbing command can be installed with `cargo install`.
 
 ```shell
-cargo install --git https://github.com/joeycarpinelli/git-filter git-filter-tree
+cargo install --git https://github.com/git-ents/git-filter git-filter-tree
 ```
 
 If `~/.cargo/bin` is on your `PATH`, you can invoke the command with `git`.
@@ -32,5 +32,5 @@ git filter-tree -h
 The `git_filter_tree` library can be added to your Rust project via `cargo add`.
 
 ```shell
-cargo add --git https://github.com/joeycarpinelli/git-filter git-filter-tree
+cargo add --git https://github.com/git-ents/git-filter git-filter-tree
 ```
