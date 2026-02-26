@@ -31,7 +31,7 @@ path = "src/main.rs"
 clap.workspace = true
 git2.workspace = true
 globset.workspace = true
-git-filter-tree = { path = "plumbing/git-filter-tree" }
+git-filter-tree = { version = "0.0.0", path = "plumbing/git-filter-tree" }
 
 [build-dependencies]
 clap_mangen.workspace = true
