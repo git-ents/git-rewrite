@@ -37,7 +37,7 @@ jobs:
       - name: Install pre-commit and hooks
         run: |
           uv tool install pre-commit
-          pre-commit install-hooks -c .config/pre-commit-config.yaml
+          pre-commit install-hooks -c .config/pre-commit.yaml
 
       - name: Run pre-commit on all files
         run: pre-commit run -a
