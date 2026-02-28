@@ -6,17 +6,16 @@
   "draft": false,
   "include-component-in-tag": true,
   "include-v-in-tag": true,
-  "pull-request-title-pattern": "chore(release): ${component}-v${version}",
   "prerelease": true,
   "release-type": "rust",
   "initial-version": "0.0.1",
-  "separate-pull-requests": true,
+  "separate-pull-requests": false,
   "draft-pull-request": true,
+  "group-pull-request-title-pattern": "chore(release): ${branch}",
   "pull-request-footer": "This release was generated with [Release Please](https://github.com/googleapis/release-please).",
   "packages": {
     ".": {
       "release-as": "0.0.1",
-      "pull-request-title-pattern": "chore(release): v${version}",
       "include-component-in-tag": false,
       "extra-files": [
         {
@@ -33,7 +32,7 @@
         {
           "type": "toml",
           "path": "Cargo.toml",
-          "jsonpath": "$.dependencies['git-filter-tree'].version"
+          "jsonpath": "$.dependencies.git-filter-tree.version"
         }
       ]
     }
