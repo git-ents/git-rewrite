@@ -64,7 +64,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
-          key: pre-commit-${{ hashFiles('.config/pre-commit-config.yaml') }}
+          key: pre-commit-${{ hashFiles('.config/pre-commit.yaml') }}
           restore-keys: |
             pre-commit-
 
