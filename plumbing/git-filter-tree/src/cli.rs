@@ -17,7 +17,7 @@ pub struct FilterTreeArgs {
 }
 
 #[derive(Parser)]
-#[command(name = "git filter-tree")]
+#[command(name = "git filter-tree", bin_name = "git filter-tree")]
 #[command(author, version, about = "Filter Git tree entries by gitattributes-style patterns", long_about = None)]
 pub struct Cli {
     #[command(flatten)]

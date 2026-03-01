@@ -32,7 +32,7 @@ pub fn tree(args: &TreeArgs) -> Result<(), Box<dyn std::error::Error>> {
         .join(", ");
 
     println!(
-        "Filtered {} with {} and updated the index ({} entries).",
+        "Rewrote {} keeping only {} and updated the index ({} entries).",
         args.treeish,
         pattern_list,
         filtered.len(),
