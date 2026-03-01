@@ -1,5 +1,6 @@
 #![doc = include_str!("../README.md")]
 pub mod cli;
+pub mod exe;
 pub use git2::{Error, Repository};
 use globset::{GlobSet, GlobSetBuilder};
 
