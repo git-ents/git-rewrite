@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.6](https://github.com/git-ents/git-rewrite/compare/v0.0.5...v0.0.6) (2026-03-01)
+
+
+### Miscellaneous Chores
+
+* Fix release step with proper tag filtering ([93bdb33](https://github.com/git-ents/git-rewrite/commit/93bdb331cc152197bc022c8da57952ef64abe7d5))
+* Fix version syncing in Release Please ([cb7699c](https://github.com/git-ents/git-rewrite/commit/cb7699c7050223877bf056ba6b63e7c2b235063f))
+
 ## [0.0.5](https://github.com/git-ents/git-rewrite/compare/v0.0.4...v0.0.5) (2026-03-01)
 
 
