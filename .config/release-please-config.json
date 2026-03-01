@@ -1,8 +1,6 @@
 {
   "pull-request-header": "Release Notes",
   "changelog-path": "CHANGELOG.md",
-  "bump-minor-pre-major": true,
-  "bump-patch-for-minor-pre-major": true,
   "draft": false,
   "include-component-in-tag": true,
   "include-v-in-tag": true,
