@@ -1,7 +1,7 @@
 use clap::Parser;
 
 #[derive(Parser)]
-#[command(name = "git-rewrite")]
+#[command(name = "git rewrite")]
 #[command(author, version, about = "Rewrite Git repository history, trees, and blobs", long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
