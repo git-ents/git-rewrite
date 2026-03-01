@@ -2,13 +2,13 @@
 
 *Porcelain for rewriting repository history, trees, and (eventually) blobs.*
 
-> [!CAUTION]
-> This project is being actively developed!
-
 <!-- rumdl-disable MD013 -->
 [![CI](https://github.com/git-ents/git-filter/actions/workflows/CI.yml/badge.svg)](https://github.com/git-ents/git-filter/actions/workflows/CI.yml)
 [![CD](https://github.com/git-ents/git-filter/actions/workflows/CD.yml/badge.svg)](https://github.com/git-ents/git-filter/actions/workflows/CD.yml)
 <!-- rumdl-enable MD013 -->
+
+> [!CAUTION]
+> This project is being actively developed!
 
 ## Motivation
 
