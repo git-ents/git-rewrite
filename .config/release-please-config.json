@@ -6,7 +6,6 @@
   "draft": false,
   "include-component-in-tag": true,
   "include-v-in-tag": true,
-  "prerelease": true,
   "release-type": "rust",
   "initial-version": "0.0.1",
   "draft-pull-request": true,
