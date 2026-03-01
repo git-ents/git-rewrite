@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.3...git-filter-tree-v0.0.4) (2026-03-01)
+
+
+### Miscellaneous Chores
+
+* Trigger next release ([671c58c](https://github.com/git-ents/git-rewrite/commit/671c58c7079460c3e8cc92775760d70b3b62df69))
+
 ## [0.0.3](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.2...git-filter-tree-v0.0.3) (2026-03-01)
 
 
