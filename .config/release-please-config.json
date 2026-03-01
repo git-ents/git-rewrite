@@ -19,11 +19,16 @@
       "include-component-in-tag": false,
       "exclude-paths": ["plumbing/"]
     },
-    "plumbing/git-filter-tree": {}
+    "plumbing/git-filter-tree": {
+      "extra-files": [
+        {
+          "type": "toml",
+          "path": "/Cargo.toml",
+          "jsonpath": "$.dependencies.git-filter-tree.version"
+        }
+      ]
+    }
   },
-  "plugins": [
-    { "type": "sentence-case" },
-    { "type": "cargo-workspace", "merge": true }
-  ],
+  "plugins": [{ "type": "sentence-case" }, { "type": "cargo-workspace" }],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
