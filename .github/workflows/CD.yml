@@ -13,7 +13,7 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     permissions:
-      # Use to sign the release artifacts
+      # Used to sign the release artifacts
       id-token: write
       # Used to upload release artifacts
       contents: write
@@ -24,7 +24,8 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           cache: true
-      - name: Package crate
+          toolchain: stable
+      - name: Package crates
         run: cargo package --workspace
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
@@ -36,7 +37,7 @@ jobs:
           IS_PRERELEASE: ${{ github.event.release.prerelease }}
         run: |
           if [ "$IS_PRERELEASE" = "true" ]; then
-            cargo publish --dry-run
+            cargo publish --workspace --dry-run
           else
-            cargo publish --token "$CARGO_REGISTRY_TOKEN"
+            cargo publish --workspace --token "$CARGO_REGISTRY_TOKEN"
           fi
