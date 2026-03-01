@@ -71,7 +71,7 @@ jobs:
       - name: Install pre-commit and hooks
         run: |
           uv tool install pre-commit
-          pre-commit install-hooks
+          pre-commit install-hooks -c .config/pre-commit.yaml
 
       - name: Create commit message from PR
         run: |
