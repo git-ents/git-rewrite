@@ -4,6 +4,8 @@
 
 > [!CAUTION]
 > This project is being actively developed!
+> Despite this, semantic versioning rules will be respected.
+> Expect frequent updates.
 
 ## Motivation
 
