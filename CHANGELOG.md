@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/git-ents/git-rewrite/compare/v0.0.2...v0.0.3) (2026-03-01)
+
+
+### Features
+
+* Update crate metadata ([b38c497](https://github.com/git-ents/git-rewrite/commit/b38c49726869f3db013633f8f8f34f0fd6dfe331))
+
 ## [0.0.2](https://github.com/git-ents/git-rewrite/compare/v0.0.1...v0.0.2) (2026-03-01)
 
 
