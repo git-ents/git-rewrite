@@ -12,7 +12,7 @@
   "draft-pull-request": true,
   "group-pull-request-title-pattern": "chore(release): bump crate versions on `${branch}`",
   "pull-request-footer": "This release was generated with [Release Please](https://github.com/googleapis/release-please).",
-  "release-as": "0.0.5",
+  "release-as": "0.0.6",
   "packages": {
     ".": {
       "include-component-in-tag": false,
