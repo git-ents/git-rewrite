@@ -1,4 +1,4 @@
-//! Filter Git trees by entry name patterns.
+#![doc = include_str!("../README.md")]
 pub mod cli;
 pub use git2::{Error, Repository};
 use globset::{GlobSet, GlobSetBuilder};
