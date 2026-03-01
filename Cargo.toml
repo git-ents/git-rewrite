@@ -15,7 +15,7 @@ clap_mangen = "0.2.31"
 
 [package]
 name = "git-rewrite"
-version = "0.0.2"
+version = "0.0.3"
 description = "Rewrite repository history, trees, and blobs"
 repository = "https://github.com/git-ents/git-rewrite"
 edition.workspace = true
