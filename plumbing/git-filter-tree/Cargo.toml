@@ -1,6 +1,6 @@
 [package]
 name = "git-filter-tree"
-version = "0.0.4"
+version = "0.0.3"
 description = "Filter Git tree objects by glob patterns"
 repository = "https://github.com/git-ents/git-rewrite"
 edition.workspace = true
