@@ -11,7 +11,7 @@
   "initial-version": "0.0.1",
   "separate-pull-requests": false,
   "draft-pull-request": true,
-  "group-pull-request-title-pattern": "chore(release): ${branch}",
+  "group-pull-request-title-pattern": "chore(release): generate new versions on `${branch}`",
   "pull-request-footer": "This release was generated with [Release Please](https://github.com/googleapis/release-please).",
   "packages": {
     ".": {
