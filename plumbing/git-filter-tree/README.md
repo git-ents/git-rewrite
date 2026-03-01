@@ -2,6 +2,9 @@
 
 *Filter Git tree objects in code, or on the command-line!*
 
+> [!CAUTION]
+> This project is being actively developed!
+
 ## Motivation
 
 When fetching content from upstream repositories, you may want to exclude specific patterns.
@@ -18,6 +21,12 @@ This functionality is used as *plumbing* for the primary application of this [pr
 The `git-filter-tree` plumbing command can be installed with `cargo install`.
 
 ```shell
+cargo install --locked git-filter-tree
+```
+
+To install the latest development version, install from Git.
+
+```shell
 cargo install --git https://github.com/git-ents/git-rewrite git-filter-tree
 ```
 
@@ -25,6 +34,12 @@ If `~/.cargo/bin` is on your `PATH`, you can invoke the command with `git`.
 
 ```shell
 git filter-tree -h
+```
+
+To generate and install `man` entries for the CLI, use the `--generate-man` command option once.
+
+```shell
+git filter-tree --generate-man
 ```
 
 ### Library

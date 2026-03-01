@@ -30,8 +30,18 @@ fn parse_generate_man_flag() -> Option<PathBuf> {
     let dir = args
         .get(pos + 1)
         .map(PathBuf::from)
-        .unwrap_or_else(|| PathBuf::from("man"));
+        .unwrap_or_else(default_man_dir);
     Some(dir)
+}
+
+fn default_man_dir() -> PathBuf {
+    std::env::var_os("XDG_DATA_HOME")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| {
+            let home = std::env::var_os("HOME").expect("HOME is not set");
+            PathBuf::from(home).join(".local/share")
+        })
+        .join("man")
 }
 
 fn generate_man_page(output_dir: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
@@ -42,10 +52,37 @@ fn generate_man_page(output_dir: PathBuf) -> Result<(), Box<dyn std::error::Erro
     let man = clap_mangen::Man::new(cmd);
     let mut buffer = Vec::new();
     man.render(&mut buffer)?;
-    std::fs::write(man1_dir.join("git-filter-tree.1"), buffer)?;
 
-    eprintln!("  → git-filter-tree.1");
+    let man_path = man1_dir.join("git-filter-tree.1");
+    std::fs::write(&man_path, buffer)?;
+
+    let output_dir = output_dir.canonicalize()?;
+    eprintln!("Wrote man page to {}", man_path.canonicalize()?.display());
+
+    if !manpath_covers(&output_dir) {
+        eprintln!();
+        eprintln!("You may need to add this to your shell environment:");
+        eprintln!();
+        eprintln!("  export MANPATH=\"{}:$MANPATH\"", output_dir.display());
+    }
     Ok(())
+}
+
+/// Returns `true` if `dir` is equal to, or a subdirectory of, any component
+/// in the `MANPATH` environment variable.
+fn manpath_covers(dir: &std::path::Path) -> bool {
+    let Some(manpath) = std::env::var_os("MANPATH") else {
+        return false;
+    };
+    for component in std::env::split_paths(&manpath) {
+        let Ok(component) = component.canonicalize() else {
+            continue;
+        };
+        if dir.starts_with(&component) {
+            return true;
+        }
+    }
+    false
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
