@@ -40,7 +40,7 @@ jobs:
           pre-commit install-hooks -c .config/pre-commit.yaml
 
       - name: Run pre-commit on all files
-        run: pre-commit run -a
+        run: pre-commit run -a -c .config/pre-commit.yaml
 
   validate-pr-title:
     name: Validate squash commit message
