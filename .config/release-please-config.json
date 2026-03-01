@@ -16,6 +16,7 @@
   "packages": {
     ".": {
       "release-as": "0.0.3",
+      "pull-request-title-pattern": "chore(release): bump `git-rewrite` to v${version}",
       "include-component-in-tag": false,
       "exclude-paths": ["plumbing/"]
     },
