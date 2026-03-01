@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.3](https://github.com/git-ents/git-filter/compare/v0.0.2...v0.0.3) (2026-03-01)
+
+
+### Features
+
+* Update crate metadata ([b38c497](https://github.com/git-ents/git-filter/commit/b38c49726869f3db013633f8f8f34f0fd6dfe331))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * git-filter-tree bumped from 0.0.2 to 0.0.3
+
 ## [0.0.2](https://github.com/git-ents/git-rewrite/compare/v0.0.1...v0.0.2) (2026-03-01)
 
 
