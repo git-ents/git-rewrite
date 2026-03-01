@@ -34,4 +34,4 @@ clap.workspace = true
 clap_mangen.workspace = true
 git2.workspace = true
 globset.workspace = true
-git-filter-tree = { version = "0.0.2", path = "plumbing/git-filter-tree" }
+git-filter-tree = { version = "0.0.3", path = "plumbing/git-filter-tree" }
