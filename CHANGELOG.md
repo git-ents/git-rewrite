@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.1.0](https://github.com/git-ents/git-rewrite/compare/v0.0.6...v0.1.0) (2026-03-01)
+
+
+### Features
+
+* Add execution library for custom (future) CLI implementations ([7dc42c0](https://github.com/git-ents/git-rewrite/commit/7dc42c02942f9895d012d591f28030c8a5eb2940))
+* Match CLI names to expected Git extension names ([5cf37da](https://github.com/git-ents/git-rewrite/commit/5cf37daa28e4ac9aad7198aeeed3fa9d73dd392c))
+
+
+### Miscellaneous Chores
+
+* Remove pre-release Release Please specification ([3e56890](https://github.com/git-ents/git-rewrite/commit/3e568908753b8eb8fb9b83bb83d728612349dd91))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * git-filter-tree bumped from 0.0.6 to 0.0.7
+
 ## [0.0.6](https://github.com/git-ents/git-rewrite/compare/v0.0.5...v0.0.6) (2026-03-01)
 
 

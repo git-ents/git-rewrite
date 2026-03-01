@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.7](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.6...git-filter-tree-v0.0.7) (2026-03-01)
+
+
+### Features
+
+* Add execution library for custom (future) CLI implementations ([7dc42c0](https://github.com/git-ents/git-rewrite/commit/7dc42c02942f9895d012d591f28030c8a5eb2940))
+* Match CLI names to expected Git extension names ([5cf37da](https://github.com/git-ents/git-rewrite/commit/5cf37daa28e4ac9aad7198aeeed3fa9d73dd392c))
+
 ## [0.0.6](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.5...git-filter-tree-v0.0.6) (2026-03-01)
 
 
