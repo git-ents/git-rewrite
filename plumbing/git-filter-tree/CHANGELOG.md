@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.5](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.4...git-filter-tree-v0.0.5) (2026-03-01)
+
+
+### Reverts
+
+* "chore(release): bump `git-rewrite` to v0.0.4 ([#24](https://github.com/git-ents/git-rewrite/issues/24))" ([8dc53a6](https://github.com/git-ents/git-rewrite/commit/8dc53a647349f0acd96cc74dfae28ff280725ce8))
+
+
+### Miscellaneous Chores
+
+* Pin next release ([b91f032](https://github.com/git-ents/git-rewrite/commit/b91f032cd75bcd64fd2a3b98c6bee474740b9073))
+* Pin next release ([6d6e404](https://github.com/git-ents/git-rewrite/commit/6d6e404b7bcabc080929148fec27c125521e2b6f))
+
 ## [0.0.4](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.3...git-filter-tree-v0.0.4) (2026-03-01)
 
 
