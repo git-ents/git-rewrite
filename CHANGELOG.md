@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.0.2](https://github.com/git-ents/git-rewrite/compare/v0.0.1...v0.0.2) (2026-03-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename top-level project to `git-rewrite`
+
+### Features
+
+* Add hidden `--generate-man` command to CLI ([ab897b8](https://github.com/git-ents/git-rewrite/commit/ab897b8fcad4f10e1962130bafe8d948c40903b7))
+
+
+### Code Refactoring
+
+* Rename top-level project to `git-rewrite` ([ab897b8](https://github.com/git-ents/git-rewrite/commit/ab897b8fcad4f10e1962130bafe8d948c40903b7))
+
 ## 0.0.1 (2026-03-01)
 
 

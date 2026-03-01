@@ -15,7 +15,7 @@ clap_mangen = "0.2.31"
 
 [package]
 name = "git-rewrite"
-version = "0.0.1"
+version = "0.0.2"
 edition.workspace = true
 publish.workspace = true
 license.workspace = true
@@ -32,4 +32,4 @@ clap.workspace = true
 clap_mangen.workspace = true
 git2.workspace = true
 globset.workspace = true
-git-filter-tree = { version = "0.0.1", path = "plumbing/git-filter-tree" }
+git-filter-tree = { version = "0.0.2", path = "plumbing/git-filter-tree" }
