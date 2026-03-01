@@ -21,16 +21,9 @@
       "exclude-paths": ["plumbing/"]
     },
     "plumbing/git-filter-tree": {
-      "release-as": "0.0.3",
-      "extra-files": [
-        {
-          "type": "toml",
-          "path": "../../Cargo.toml",
-          "jsonpath": "$.dependencies.git-filter-tree.version"
-        }
-      ]
+      "release-as": "0.0.3"
     }
   },
-  "plugins": [{ "type": "sentence-case" }],
+  "plugins": [{ "type": "sentence-case" }, { "type": "cargo-workspace" }],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
