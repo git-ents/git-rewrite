@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.5...git-filter-tree-v0.0.6) (2026-03-01)
+
+
+### Features
+
+* Update crate description ([3d48542](https://github.com/git-ents/git-rewrite/commit/3d485420803e8a17b8754f920083a7e4565b297f))
+
 ## [0.0.5](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.4...git-filter-tree-v0.0.5) (2026-03-01)
 
 

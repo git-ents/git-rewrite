@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.0.6](https://github.com/git-ents/git-rewrite/compare/v0.0.5...v0.0.6) (2026-03-01)
+
+
+### Features
+
+* Update crate description ([3d48542](https://github.com/git-ents/git-rewrite/commit/3d485420803e8a17b8754f920083a7e4565b297f))
+
+
+### Miscellaneous Chores
+
+* Fix release step with proper tag filtering ([93bdb33](https://github.com/git-ents/git-rewrite/commit/93bdb331cc152197bc022c8da57952ef64abe7d5))
+* Fix version syncing in Release Please ([cb7699c](https://github.com/git-ents/git-rewrite/commit/cb7699c7050223877bf056ba6b63e7c2b235063f))
+* Remove temporary version pinning ([c612198](https://github.com/git-ents/git-rewrite/commit/c6121980708429c66d5012adf9f09c3d181ae338))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * git-filter-tree bumped from 0.0.5 to 0.0.6
+
 ## [0.0.5](https://github.com/git-ents/git-rewrite/compare/v0.0.4...v0.0.5) (2026-03-01)
 
 
