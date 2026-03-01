@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/git-ents/git-rewrite/compare/v0.0.4...v0.0.5) (2026-03-01)
+
+
+### Reverts
+
+* "chore(release): bump `git-rewrite` to v0.0.4 ([#24](https://github.com/git-ents/git-rewrite/issues/24))" ([8dc53a6](https://github.com/git-ents/git-rewrite/commit/8dc53a647349f0acd96cc74dfae28ff280725ce8))
+
 ## [0.0.3](https://github.com/git-ents/git-rewrite/compare/v0.0.2...v0.0.3) (2026-03-01)
 
 
