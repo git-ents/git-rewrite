@@ -14,12 +14,10 @@
   "pull-request-footer": "This release was generated with [Release Please](https://github.com/googleapis/release-please).",
   "packages": {
     ".": {
-      "release-as": "0.0.6",
       "include-component-in-tag": false,
       "exclude-paths": ["plumbing/"]
     },
     "plumbing/git-filter-tree": {
-      "release-as": "0.0.6",
       "extra-files": [
         {
           "type": "toml",
