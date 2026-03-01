@@ -128,7 +128,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-build-
       - name: Generate man pages
-        run: cargo xtask gen-man
+        run: |
+          cargo run --package git-rewrite -- --generate-man target/debug/man
+          cargo run --package git-filter-tree -- --generate-man target/debug/man
 
   ci:
     name: CI

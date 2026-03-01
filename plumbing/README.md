@@ -7,6 +7,6 @@
 
 ## Motivation
 
-This project's top-level crate, [`git-filter`](/), wraps several library targets and plumbing commands (binaries) into a single user interface.
+This project's top-level crate, [`git-rewrite`](/), wraps several library targets and plumbing commands (binaries) into a single user interface.
 Most of the underlying functionality is implemented as workspace crates.
 This allows for more precisely scoped versioning and testing.

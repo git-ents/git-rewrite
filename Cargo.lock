@@ -190,21 +190,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "git-filter-cli"
+name = "git-filter-tree"
 version = "0.0.1"
 dependencies = [
  "clap",
  "clap_mangen",
- "git-filter-tree",
  "git2",
  "globset",
 ]
 
 [[package]]
-name = "git-filter-tree"
+name = "git-rewrite"
 version = "0.0.1"
 dependencies = [
  "clap",
+ "clap_mangen",
+ "git-filter-tree",
  "git2",
  "globset",
 ]
@@ -673,16 +674,6 @@ name = "writeable"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9edde0db4769d2dc68579893f2306b26c6ecfbe0ef499b013d731b7b9247e0b9"
-
-[[package]]
-name = "xtask"
-version = "0.0.1"
-dependencies = [
- "clap",
- "clap_mangen",
- "git-filter-cli",
- "git-filter-tree",
-]
 
 [[package]]
 name = "yoke"

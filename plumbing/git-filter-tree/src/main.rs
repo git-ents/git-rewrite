@@ -1,16 +1,51 @@
 mod cli;
 
-use clap::Parser;
+use clap::{CommandFactory, Parser};
 use cli::{Cli, OutputFormat};
 use git_filter_tree::FilterTree;
 use git2 as git;
+use std::path::PathBuf;
 use std::process;
 
 fn main() {
+    if let Some(dir) = parse_generate_man_flag() {
+        if let Err(e) = generate_man_page(dir) {
+            eprintln!("Error: {}", e);
+            process::exit(1);
+        }
+        return;
+    }
+
     if let Err(e) = run() {
         eprintln!("Error: {}", e);
         process::exit(1);
     }
+}
+
+/// Check for `--generate-man <DIR>` before clap parses, so it doesn't
+/// conflict with the required positional arguments.
+fn parse_generate_man_flag() -> Option<PathBuf> {
+    let args: Vec<String> = std::env::args().collect();
+    let pos = args.iter().position(|a| a == "--generate-man")?;
+    let dir = args
+        .get(pos + 1)
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("man"));
+    Some(dir)
+}
+
+fn generate_man_page(output_dir: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    let man1_dir = output_dir.join("man1");
+    std::fs::create_dir_all(&man1_dir)?;
+
+    let cmd = Cli::command();
+    let man = clap_mangen::Man::new(cmd);
+    let mut buffer = Vec::new();
+    man.render(&mut buffer)?;
+    std::fs::write(man1_dir.join("git-filter-tree.1"), buffer)?;
+
+    eprintln!("  → git-filter-tree.1");
+    Ok(())
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {

@@ -2,8 +2,8 @@ use clap::Parser;
 use git_filter_tree::cli::FilterTreeArgs;
 
 #[derive(Parser)]
-#[command(name = "git-filter")]
-#[command(author, version, about = "Filter Git repository history, trees, and blobs", long_about = None)]
+#[command(name = "git-rewrite")]
+#[command(author, version, about = "Rewrite Git repository history, trees, and blobs", long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Command,

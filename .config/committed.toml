@@ -21,6 +21,5 @@ allowed_types = [
 allowed_scopes = [
     "checks",
     "release",
-    "xtask",
 ]
 merge_commit = false

@@ -1,7 +1,7 @@
 use clap::{Args, Parser};
 
 /// Arguments for filtering a Git tree by gitattributes-style patterns.
-/// Defined here so it can be re-used as a subcommand in the porcelain `git-filter` CLI.
+/// Defined here so it can be re-used as a subcommand in the porcelain `git-rewrite` CLI.
 #[derive(Args, Clone)]
 pub struct FilterTreeArgs {
     /// Tree-ish reference (commit, branch, tag, or tree SHA)

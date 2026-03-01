@@ -17,13 +17,6 @@
     ".": {
       "release-as": "0.0.1",
       "include-component-in-tag": false,
-      "extra-files": [
-        {
-          "type": "toml",
-          "path": "xtask/Cargo.toml",
-          "jsonpath": "$.package.version"
-        }
-      ],
       "exclude-paths": ["plumbing/"]
     },
     "plumbing/git-filter-tree": {

@@ -1,6 +1,6 @@
-# ✂️ `git-filter`
+# ✂️ `git-rewrite`
 
-*Porcelain for filtering repository history, trees, and (eventually) blobs.*
+*Porcelain for rewriting repository history, trees, and (eventually) blobs.*
 
 <!-- rumdl-disable MD013 -->
 [![CI](https://github.com/git-ents/git-filter/actions/workflows/CI.yml/badge.svg)](https://github.com/git-ents/git-filter/actions/workflows/CI.yml)

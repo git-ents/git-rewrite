@@ -1,3 +1,3 @@
-//! Filter repository history, trees, and (eventually) blobs.
+//! Rewrite repository history, trees, and (eventually) blobs.
 
 pub mod cli;
