@@ -16,6 +16,17 @@ pub trait FilterTree {
         tree: &'a git2::Tree<'a>,
         patterns: &[&str], // TODO create a `git-glob` crate to handle patterns more gracefully
     ) -> Result<git2::Tree<'a>, Error>;
+
+    /// Filters tree entries by gitattributes and returns a new tree with contents filtered.
+    /// Recursively walks the tree and matches attributes against full paths from the tree root.
+    ///
+    /// The `attributes` type is an array of string slices. For attributes which haves values,
+    /// not simply set or unset, use typical `.gitattributes` syntax.
+    fn filter_by_attributes<'a>(
+        &'a self,
+        tree: &'a git2::Tree<'a>,
+        attributes: &[&str],
+    ) -> Result<git2::Tree<'a>, Error>;
 }
 
 impl FilterTree for git2::Repository {
@@ -52,6 +63,14 @@ impl FilterTree for git2::Repository {
 
         // Recursively filter the tree
         filter_tree_recursive(self, tree, None, &matcher)
+    }
+
+    fn filter_by_attributes<'a>(
+        &'a self,
+        _tree: &'a git2::Tree<'a>,
+        _attributes: &[&str],
+    ) -> Result<git2::Tree<'a>, Error> {
+        todo!()
     }
 }
 
