@@ -2,7 +2,7 @@
 pub mod cli;
 pub mod exe;
 pub use git2::{Error, Repository};
-use globset::{GlobSet, GlobSetBuilder};
+use globset::GlobSetBuilder;
 
 pub trait FilterTree {
     /// Filters tree entries by gitattributes-style patterns and returns a new tree with contents
@@ -62,7 +62,7 @@ impl FilterTree for git2::Repository {
             .map_err(|e| Error::from_str(&e.to_string()))?;
 
         // Recursively filter the tree
-        filter_tree_recursive(self, tree, None, &matcher)
+        filter_tree_recursive(self, tree, None, &|_repo, path| matcher.is_match(path))
     }
 
     fn filter_by_attributes<'a>(
@@ -76,12 +76,15 @@ impl FilterTree for git2::Repository {
 
 /// Recursively filters a tree, matching patterns against full paths.
 /// Returns a new tree containing only entries that match or have matching descendants.
-fn filter_tree_recursive<'a>(
+fn filter_tree_recursive<'a, F>(
     repo: &'a Repository,
     tree: &'a git2::Tree<'a>,
     prefix: Option<&str>,
-    matcher: &GlobSet,
-) -> Result<git2::Tree<'a>, Error> {
+    predicate: &F,
+) -> Result<git2::Tree<'a>, Error>
+where
+    F: Fn(&Repository, &str) -> bool,
+{
     let mut builder = repo.treebuilder(None)?;
 
     for entry in tree.iter() {
@@ -96,14 +99,14 @@ fn filter_tree_recursive<'a>(
 
         match entry.kind() {
             Some(git2::ObjectType::Blob) => {
-                if matcher.is_match(&full_path) {
+                if predicate(repo, &full_path) {
                     builder.insert(name, entry.id(), entry.filemode())?;
                 }
             }
             Some(git2::ObjectType::Tree) => {
                 let subtree = entry.to_object(repo)?.peel_to_tree()?;
                 let filtered_subtree =
-                    filter_tree_recursive(repo, &subtree, Some(&full_path), matcher)?;
+                    filter_tree_recursive(repo, &subtree, Some(&full_path), predicate)?;
                 if !filtered_subtree.is_empty() {
                     builder.insert(name, filtered_subtree.id(), entry.filemode())?;
                 }
