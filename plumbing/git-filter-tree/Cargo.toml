@@ -1,6 +1,6 @@
 [package]
 name = "git-filter-tree"
-version = "0.1.0"
+version = "0.1.1"
 description = "Filter and write trees in Git's object database."
 repository = "https://github.com/git-ents/git-filter"
 documentation = "https://docs.rs/git-filter-tree"
