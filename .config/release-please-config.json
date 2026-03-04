@@ -10,9 +10,8 @@
   "group-pull-request-title-pattern": "chore(release): bump crate versions on `${branch}`",
   "pull-request-footer": "This release was generated with [Release Please](https://github.com/googleapis/release-please).",
   "packages": {
-    ".": {
-      "include-component-in-tag": false,
-      "exclude-paths": ["plumbing/"]
+    "porcelain/git-rewrite": {
+      "include-component-in-tag": false
     },
     "plumbing/git-filter-tree": {}
   },

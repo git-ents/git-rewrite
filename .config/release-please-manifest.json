@@ -1,4 +1,4 @@
 {
-  ".": "0.1.0",
+  "porcelain/git-rewrite": "0.1.0",
   "plumbing/git-filter-tree": "0.1.0"
 }
