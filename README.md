@@ -14,16 +14,15 @@
 
 ## About
 
-To support a more expansive usage of the Git object database — as is the goal for other projects within the [`git-ents`](https://github.com/git-ents) organization — new porcelain is needed.
-This project provides porcelain that allows users to rewrite repository history as safely as possible.
+To support a more expansive usage of the Git object database — as is the goal for other projects within the [`git-ents`](https://github.com/git-ents) organization — new tooling is needed.
+This project provides a command that allows users to rewrite repository history as safely as possible.
 
-The terms *porcelain* and *plumbing* are [borrowed from Git itself](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain).
-The user-facing `git-rewrite` command is the porcelain: a friendly interface that wraps lower-level functionality.
-That lower-level functionality lives in plumbing crates, which are independently versioned and usable as libraries in their own right.
+You may see the terms *porcelain* and *plumbing* used across this project.
+These are [borrowed from Git itself](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain): porcelain refers to user-facing commands, and plumbing refers to the lower-level libraries and commands they are built on.
 
 ## Crates
 
-| Crate | Kind | Description |
-|---|---|---|
-| [`git-rewrite`](porcelain/git-rewrite/) | porcelain | Rewrite repository history and trees via a `git`-style CLI |
-| [`git-filter-tree`](plumbing/git-filter-tree/) | plumbing | Filter Git tree objects by glob pattern, as a library or CLI |
+| Crate | Description |
+|---|---|
+| [`git-rewrite`](crates/git-rewrite/) | Rewrite repository history and trees via a `git`-style CLI |
+| [`git-filter-tree`](crates/git-filter-tree/) | Filter Git tree objects by glob pattern, as a library or CLI |

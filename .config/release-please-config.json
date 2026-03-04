@@ -10,10 +10,10 @@
   "group-pull-request-title-pattern": "chore(release): bump crate versions on `${branch}`",
   "pull-request-footer": "This release was generated with [Release Please](https://github.com/googleapis/release-please).",
   "packages": {
-    "porcelain/git-rewrite": {
+    "crates/git-rewrite": {
       "include-component-in-tag": false
     },
-    "plumbing/git-filter-tree": {}
+    "crates/git-filter-tree": {}
   },
   "plugins": [{ "type": "sentence-case" }, { "type": "cargo-workspace" }],
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"

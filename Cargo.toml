@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["porcelain/git-rewrite", "plumbing/git-filter-tree"]
+members = ["crates/git-rewrite", "crates/git-filter-tree"]
 
 [workspace.package]
 edition = "2024"
