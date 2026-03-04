@@ -1,5 +1,47 @@
-#![doc = include_str!("../README.md")]
-pub mod cli;
+//! Filter Git tree objects by glob patterns or gitattributes.
+//!
+//! This crate exposes the [`FilterTree`] trait, implemented on
+//! [`git2::Repository`], which produces a new tree containing only the entries
+//! that match either a set of **glob patterns** or a set of **gitattributes**.
+//! Trees are walked recursively; patterns are matched against full paths from
+//! the tree root.
+//!
+//! It is the plumbing library behind the `git filter-tree` command and the
+//! [`git-rewrite`](https://docs.rs/git-rewrite) porcelain.
+//!
+//! # Filter by glob pattern
+//!
+//! ```no_run
+//! use git_filter_tree::FilterTree as _;
+//!
+//! let repo = git2::Repository::open_from_env()?;
+//! let tree = repo.head()?.peel_to_tree()?;
+//!
+//! // Produce a new tree that contains only Rust source files.
+//! let filtered = repo.filter_by_patterns(&tree, &["**/*.rs"])?;
+//! println!("tree sha: {}", filtered.id());
+//! # Ok::<(), Box<dyn std::error::Error>>(())
+//! ```
+//!
+//! A trailing `/` is expanded to `dir/**`, so `"src/"` keeps all files under
+//! `src/`. Multiple patterns are OR-ed together.
+//!
+//! # Filter by gitattributes
+//!
+//! ```no_run
+//! use git_filter_tree::FilterTree as _;
+//!
+//! let repo = git2::Repository::open_from_env()?;
+//! let tree = repo.head()?.peel_to_tree()?;
+//!
+//! // Keep only entries that have the `export` attribute set in .gitattributes.
+//! let filtered = repo.filter_by_attributes(&tree, &["export"])?;
+//! println!("tree sha: {}", filtered.id());
+//! # Ok::<(), Box<dyn std::error::Error>>(())
+//! ```
+//!
+//! All listed attributes must be set (AND semantics). Entries with an
+//! attribute explicitly unset (`-export`) or unspecified are excluded.
 pub mod exe;
 use std::path::{Path, PathBuf};
 

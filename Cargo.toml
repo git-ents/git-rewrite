@@ -16,11 +16,16 @@ clap_mangen = "0.2.31"
 [package]
 name = "git-rewrite"
 version = "0.1.0"
-description = "Filter and rewrite history, trees, and (eventuall) blobs."
-repository = "https://github.com/git-ents/git-rewrite"
+description = "Filter and rewrite history, trees, and (eventually) blobs."
+repository = "https://github.com/git-ents/git-filter"
+documentation = "https://docs.rs/git-rewrite"
 edition.workspace = true
 publish.workspace = true
 license.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [lib]
 path = "src/lib.rs"
