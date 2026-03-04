@@ -439,4 +439,257 @@ mod tests {
         cleanup_test_repo(temp_path);
         Ok(())
     }
+
+    // -----------------------------------------------------------------------
+    // Helpers and tests for filter_by_attributes
+    // -----------------------------------------------------------------------
+
+    /// Initializes a non-bare repository so that `.gitattributes` written to
+    /// its working directory are picked up by `repo.get_attr(…)`.
+    fn setup_attr_test_repo() -> (Repository, PathBuf) {
+        let thread_id = std::thread::current().id();
+        let temp_path = std::env::temp_dir().join(format!("git-filter-attr-test-{:?}", thread_id));
+        let _ = fs::remove_dir_all(&temp_path);
+        fs::create_dir_all(&temp_path).unwrap();
+        let repo = Repository::init(&temp_path).unwrap();
+        (repo, temp_path)
+    }
+
+    fn write_gitattributes(repo_path: &Path, content: &str) {
+        fs::write(repo_path.join(".gitattributes"), content).unwrap();
+    }
+
+    // --- filter_by_attributes: error cases ---------------------------------
+
+    #[test]
+    fn test_filter_by_attributes_empty_returns_error() {
+        let (repo, temp_path) = setup_attr_test_repo();
+        write_gitattributes(&temp_path, "");
+
+        let tree = create_test_tree(&repo).unwrap();
+        let result = repo.filter_by_attributes(&tree, &[]);
+        assert!(result.is_err());
+        assert_eq!(
+            result.unwrap_err().message(),
+            "at least one attribute is required"
+        );
+
+        cleanup_test_repo(temp_path);
+    }
+
+    // --- filter_by_attributes: single attribute ----------------------------
+
+    #[test]
+    fn test_filter_by_attributes_set_attribute_includes_matching_files() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // Only .txt files carry the export-ignore attribute.
+        write_gitattributes(&temp_path, "*.txt export-ignore\n");
+
+        let blob = repo.blob(b"content")?;
+        let mut builder = repo.treebuilder(None)?;
+        builder.insert("readme.txt", blob, 0o100644)?;
+        builder.insert("main.rs", blob, 0o100644)?;
+        builder.insert("data.json", blob, 0o100644)?;
+        let tree = repo.find_tree(builder.write()?)?;
+
+        let filtered = repo.filter_by_attributes(&tree, &["export-ignore"])?;
+        assert_eq!(filtered.len(), 1);
+        assert!(filtered.get_name("readme.txt").is_some());
+        assert!(filtered.get_name("main.rs").is_none());
+        assert!(filtered.get_name("data.json").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_explicitly_unset_attribute_excluded() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // .txt gets the attribute; .md explicitly has it unset with `-`.
+        write_gitattributes(&temp_path, "*.txt custom-attr\n*.md -custom-attr\n");
+
+        let blob = repo.blob(b"content")?;
+        let mut builder = repo.treebuilder(None)?;
+        builder.insert("readme.txt", blob, 0o100644)?;
+        builder.insert("notes.md", blob, 0o100644)?;
+        builder.insert("main.rs", blob, 0o100644)?;
+        let tree = repo.find_tree(builder.write()?)?;
+
+        let filtered = repo.filter_by_attributes(&tree, &["custom-attr"])?;
+        // .txt is set, .md is explicitly unset, .rs is unspecified
+        assert_eq!(filtered.len(), 1);
+        assert!(filtered.get_name("readme.txt").is_some());
+        assert!(filtered.get_name("notes.md").is_none());
+        assert!(filtered.get_name("main.rs").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_no_attributes_set_returns_empty_tree() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // Empty .gitattributes — nothing is attributed.
+        write_gitattributes(&temp_path, "");
+
+        let blob = repo.blob(b"content")?;
+        let mut builder = repo.treebuilder(None)?;
+        builder.insert("file.txt", blob, 0o100644)?;
+        builder.insert("file.rs", blob, 0o100644)?;
+        let tree = repo.find_tree(builder.write()?)?;
+
+        let filtered = repo.filter_by_attributes(&tree, &["export-ignore"])?;
+        assert_eq!(filtered.len(), 0);
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_multiple_attributes_all_required() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // .txt has both attributes; .rs has only one.
+        write_gitattributes(&temp_path, "*.txt attr-a attr-b\n*.rs attr-a\n");
+
+        let blob = repo.blob(b"content")?;
+        let mut builder = repo.treebuilder(None)?;
+        builder.insert("file.txt", blob, 0o100644)?;
+        builder.insert("file.rs", blob, 0o100644)?;
+        builder.insert("file.md", blob, 0o100644)?;
+        let tree = repo.find_tree(builder.write()?)?;
+
+        // Both attributes must be present for a file to be included.
+        let filtered = repo.filter_by_attributes(&tree, &["attr-a", "attr-b"])?;
+        assert_eq!(filtered.len(), 1);
+        assert!(filtered.get_name("file.txt").is_some());
+        assert!(filtered.get_name("file.rs").is_none());
+        assert!(filtered.get_name("file.md").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_attribute_with_value() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // linguist-language is set to a string value on .rs files.
+        write_gitattributes(&temp_path, "*.rs linguist-language=Rust\n");
+
+        let blob = repo.blob(b"content")?;
+        let mut builder = repo.treebuilder(None)?;
+        builder.insert("main.rs", blob, 0o100644)?;
+        builder.insert("main.py", blob, 0o100644)?;
+        let tree = repo.find_tree(builder.write()?)?;
+
+        // An attribute with any value (including a string) counts as "set".
+        let filtered = repo.filter_by_attributes(&tree, &["linguist-language"])?;
+        assert_eq!(filtered.len(), 1);
+        assert!(filtered.get_name("main.rs").is_some());
+        assert!(filtered.get_name("main.py").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_all_files_match() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // Wildcard rule sets the attribute on every file.
+        write_gitattributes(&temp_path, "* generated\n");
+
+        let blob = repo.blob(b"content")?;
+        let mut builder = repo.treebuilder(None)?;
+        builder.insert("a.txt", blob, 0o100644)?;
+        builder.insert("b.rs", blob, 0o100644)?;
+        builder.insert("c.md", blob, 0o100644)?;
+        let tree = repo.find_tree(builder.write()?)?;
+
+        let filtered = repo.filter_by_attributes(&tree, &["generated"])?;
+        assert_eq!(filtered.len(), 3);
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_nested_tree_filters_recursively() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // Only .proto files carry the attribute.
+        write_gitattributes(&temp_path, "*.proto linguist-generated\n");
+
+        let blob = repo.blob(b"content")?;
+
+        // src/api.proto and src/main.rs
+        let mut src_builder = repo.treebuilder(None)?;
+        src_builder.insert("api.proto", blob, 0o100644)?;
+        src_builder.insert("main.rs", blob, 0o100644)?;
+        let src_oid = src_builder.write()?;
+
+        let mut root_builder = repo.treebuilder(None)?;
+        root_builder.insert("src", src_oid, 0o040000)?;
+        root_builder.insert("README.md", blob, 0o100644)?;
+        let tree = repo.find_tree(root_builder.write()?)?;
+
+        let filtered = repo.filter_by_attributes(&tree, &["linguist-generated"])?;
+
+        // Top-level README.md must be gone; src/ must survive because it has
+        // at least one matching descendant.
+        assert_eq!(filtered.len(), 1);
+        assert!(filtered.get_name("src").is_some());
+        assert!(filtered.get_name("README.md").is_none());
+
+        let src_entry = filtered.get_name("src").unwrap();
+        let src_tree = repo.find_tree(src_entry.id())?;
+        assert_eq!(src_tree.len(), 1);
+        assert!(src_tree.get_name("api.proto").is_some());
+        assert!(src_tree.get_name("main.rs").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_empty_tree_stays_empty() -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        write_gitattributes(&temp_path, "* export-ignore\n");
+
+        let tree = repo.find_tree(repo.treebuilder(None)?.write()?)?;
+        assert_eq!(tree.len(), 0);
+
+        let filtered = repo.filter_by_attributes(&tree, &["export-ignore"])?;
+        assert_eq!(filtered.len(), 0);
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_attributes_subdirectory_excluded_when_all_children_unmatched()
+    -> Result<(), Error> {
+        let (repo, temp_path) = setup_attr_test_repo();
+        // Only .txt files match; the `docs/` sub-tree contains only .md files.
+        write_gitattributes(&temp_path, "*.txt export-ignore\n");
+
+        let blob = repo.blob(b"content")?;
+
+        let mut docs_builder = repo.treebuilder(None)?;
+        docs_builder.insert("guide.md", blob, 0o100644)?;
+        docs_builder.insert("api.md", blob, 0o100644)?;
+        let docs_oid = docs_builder.write()?;
+
+        let mut root_builder = repo.treebuilder(None)?;
+        root_builder.insert("docs", docs_oid, 0o040000)?;
+        root_builder.insert("notes.txt", blob, 0o100644)?;
+        let tree = repo.find_tree(root_builder.write()?)?;
+
+        let filtered = repo.filter_by_attributes(&tree, &["export-ignore"])?;
+
+        // `docs/` should be pruned entirely because none of its children matched.
+        assert_eq!(filtered.len(), 1);
+        assert!(filtered.get_name("notes.txt").is_some());
+        assert!(filtered.get_name("docs").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
 }
