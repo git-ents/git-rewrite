@@ -22,7 +22,7 @@ These are [borrowed from Git itself](https://git-scm.com/book/en/v2/Git-Internal
 
 ## Crates
 
-| Crate | Description |
-|---|---|
-| [`git-rewrite`](crates/git-rewrite/) | Rewrite repository history and trees via a `git`-style CLI |
-| [`git-filter-tree`](crates/git-filter-tree/) | Filter Git tree objects by glob pattern, as a library or CLI |
+| Crate | Description | API |
+|---|---|----|
+| [`git-rewrite`](crates/git-rewrite/) | Rewrite repository history and trees via a `git`-style CLI | Porcelain |
+| [`git-filter-tree`](crates/git-filter-tree/) | Filter Git tree objects by glob pattern, as a library or CLI | Plumbing |
