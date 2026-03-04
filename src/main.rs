@@ -1,8 +1,8 @@
 mod cli;
-mod exe;
 
 use clap::{CommandFactory, Parser};
 use cli::{Cli, Command};
+use git_rewrite::exe;
 use std::path::PathBuf;
 use std::process;
 

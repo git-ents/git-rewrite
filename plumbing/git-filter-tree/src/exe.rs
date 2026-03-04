@@ -1,6 +1,35 @@
 use crate::FilterTree;
-use crate::cli::{FilterTreeArgs, OutputFormat};
 use git2 as git;
+
+/// Arguments for filtering a Git tree by glob patterns.
+///
+/// Defined here so that the library exposes a self-contained type that
+/// downstream code can construct directly without going through the CLI.
+#[derive(clap::Args, Clone)]
+pub struct FilterTreeArgs {
+    /// Tree-ish reference (commit, branch, tag, or tree SHA).
+    pub treeish: String,
+
+    /// Glob patterns for entries to keep in the tree.
+    #[arg(required = true)]
+    pub patterns: Vec<String>,
+
+    /// Output format.
+    #[arg(short, long, value_enum, default_value = "tree-sha")]
+    pub format: OutputFormat,
+}
+
+/// Output format for [`print_tree`].
+#[derive(Clone, Copy, Default, clap::ValueEnum)]
+pub enum OutputFormat {
+    /// Print only the tree SHA (default).
+    #[default]
+    TreeSha,
+    /// Print each entry's type and name.
+    Entries,
+    /// Print mode, type, OID, and name for every entry.
+    Detailed,
+}
 
 /// Core filter-tree operation: resolve the treeish, filter by patterns, and
 /// return the OID of the resulting tree.  This is the reusable building-block

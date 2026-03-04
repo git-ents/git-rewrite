@@ -1,5 +1,23 @@
-use crate::cli::TreeArgs;
 use git2 as git;
+
+/// Arguments for the `tree` subcommand.
+///
+/// Defined here so that the library exposes a self-contained type that
+/// downstream code can construct directly without going through the CLI.
+#[derive(clap::Args, Clone)]
+pub struct TreeArgs {
+    /// Tree-ish reference (commit, branch, tag, or tree SHA).
+    #[arg(default_value = "HEAD")]
+    pub treeish: String,
+
+    /// Glob patterns for entries to keep in the tree (may be repeated).
+    #[arg(long = "only", required = true)]
+    pub patterns: Vec<String>,
+
+    /// Allow running with uncommitted changes in the working tree.
+    #[arg(long)]
+    pub allow_dirty: bool,
+}
 
 pub fn tree(args: &TreeArgs) -> Result<(), Box<dyn std::error::Error>> {
     let repo = git::Repository::open_from_env()?;

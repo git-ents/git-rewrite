@@ -1,5 +1,7 @@
+mod cli;
+
 use clap::{CommandFactory, Parser};
-use git_filter_tree::cli::Cli;
+use cli::Cli;
 use std::path::PathBuf;
 use std::process;
 

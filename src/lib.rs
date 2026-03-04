@@ -44,4 +44,6 @@
 //! # Ok::<(), Box<dyn std::error::Error>>(())
 //! ```
 
-pub mod cli;
+pub mod exe;
+
+pub use exe::TreeArgs;
