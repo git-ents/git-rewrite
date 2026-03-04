@@ -4,7 +4,7 @@
 //! plumbing library in a user-friendly `git`-style CLI. It operates on the
 //! working tree's index so results are immediately staged and ready to commit.
 //!
-//! # CLI usage
+//! # CLI
 //!
 //! ```text
 //! git rewrite tree [--only <PATTERN>]... [<TREEISH>]
@@ -25,7 +25,7 @@
 //! By default the working tree must be clean. Pass `--allow-dirty` to skip
 //! that check.
 //!
-//! # Library usage
+//! # Library
 //!
 //! [`exe::tree`] is the programmatic entry point. It opens a repository from
 //! the environment, filters the given tree-ish by glob patterns, and rewrites

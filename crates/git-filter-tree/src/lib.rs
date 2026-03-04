@@ -9,7 +9,7 @@
 //! It is the plumbing library behind the `git filter-tree` command and the
 //! [`git-rewrite`](https://docs.rs/git-rewrite) porcelain.
 //!
-//! # Filter by glob pattern
+//! # Filter by Pattern
 //!
 //! ```no_run
 //! use git_filter_tree::FilterTree as _;
@@ -26,7 +26,7 @@
 //! A trailing `/` is expanded to `dir/**`, so `"src/"` keeps all files under
 //! `src/`. Multiple patterns are OR-ed together.
 //!
-//! # Filter by gitattributes
+//! # Filter by Attributes
 //!
 //! ```no_run
 //! use git_filter_tree::FilterTree as _;
