@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Filter and write trees in Git's object database."
 repository = "https://github.com/git-ents/git-filter"
 documentation = "https://docs.rs/git-filter-tree"
+readme = "README.md"
 edition.workspace = true
 publish.workspace = true
 license.workspace = true

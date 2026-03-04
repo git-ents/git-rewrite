@@ -12,29 +12,18 @@
 > Despite this, semantic versioning rules will be respected.
 > Expect frequent updates.
 
-## Motivation
+## About
 
-To support a more expansive usage of the Git object database, as is the goal for other projects within the [`git-ents`](https://github.com/git-ents) organization, new porecelain is needed.
+To support a more expansive usage of the Git object database — as is the goal for other projects within the [`git-ents`](https://github.com/git-ents) organization — new porcelain is needed.
 This project provides porcelain that allows users to rewrite repository history as safely as possible.
 
-## Installation
+The terms *porcelain* and *plumbing* are [borrowed from Git itself](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain).
+The user-facing `git-rewrite` command is the porcelain: a friendly interface that wraps lower-level functionality.
+That lower-level functionality lives in plumbing crates, which are independently versioned and usable as libraries in their own right.
 
-### CLI
+## Crates
 
-The `git-rewrite` porecelain command can be installed with `cargo install`.
-
-```shell
-cargo install --locked git-rewrite
-```
-
-To install the latest development version, install from Git.
-
-```shell
-cargo install --git https://github.com/git-ents/git-rewrite
-```
-
-If `~/.cargo/bin` is on your `PATH`, you can invoke the command with `git`.
-
-```shell
-git rewrite -h
-```
+| Crate | Kind | Description |
+|---|---|---|
+| [`git-rewrite`](porcelain/git-rewrite/) | porcelain | Rewrite repository history and trees via a `git`-style CLI |
+| [`git-filter-tree`](plumbing/git-filter-tree/) | plumbing | Filter Git tree objects by glob pattern, as a library or CLI |

@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Filter and rewrite history, trees, and (eventually) blobs."
 repository = "https://github.com/git-ents/git-filter"
 documentation = "https://docs.rs/git-rewrite"
+readme = "README.md"
 edition.workspace = true
 publish.workspace = true
 license.workspace = true
