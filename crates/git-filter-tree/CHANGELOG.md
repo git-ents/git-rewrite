@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.1.0...git-filter-tree-v0.2.0) (2026-03-04)
+
+
+### Features
+
+* Add new `filter_by_attributes` trait method ([fedd5fd](https://github.com/git-ents/git-rewrite/commit/fedd5fde2dc5cb498d8c8f5327268cce0debd061))
+* Implement by-attribute filtering ([d761a56](https://github.com/git-ents/git-rewrite/commit/d761a56121ab26c753bf196bffd3708a4c20b022))
+
+
+### Bug Fixes
+
+* Add missing crate metadata ([2f252d4](https://github.com/git-ents/git-rewrite/commit/2f252d4a497198cef4ac83fade4d549de7566631))
+
 ## [0.1.0](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.0.6...git-filter-tree-v0.1.0) (2026-03-01)
 
 

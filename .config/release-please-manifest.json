@@ -1,4 +1,4 @@
 {
-  "crates/git-rewrite": "0.1.0",
-  "crates/git-filter-tree": "0.1.0"
+  "crates/git-rewrite": "0.1.1",
+  "crates/git-filter-tree": "0.2.0"
 }
