@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.1](https://github.com/git-ents/git-rewrite/compare/v0.1.0...v0.1.1) (2026-03-04)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * git-filter-tree bumped from 0.1.0 to 0.2.0
+
 ## [0.1.0](https://github.com/git-ents/git-rewrite/compare/v0.0.6...v0.1.0) (2026-03-01)
 
 
