@@ -1,6 +1,8 @@
 #![doc = include_str!("../README.md")]
 pub mod cli;
 pub mod exe;
+use std::path::{Path, PathBuf};
+
 pub use git2::{Error, Repository};
 use globset::GlobSetBuilder;
 
@@ -67,10 +69,31 @@ impl FilterTree for git2::Repository {
 
     fn filter_by_attributes<'a>(
         &'a self,
-        _tree: &'a git2::Tree<'a>,
-        _attributes: &[&str],
+        tree: &'a git2::Tree<'a>,
+        attributes: &[&str],
     ) -> Result<git2::Tree<'a>, Error> {
-        todo!()
+        if attributes.is_empty() {
+            return Err(git2::Error::from_str("at least one attribute is required"));
+        }
+
+        filter_tree_recursive(self, tree, None, &|repo, path| {
+            for attribute in attributes {
+                match repo.get_attr(path, attribute, git2::AttrCheckFlags::FILE_THEN_INDEX) {
+                    Ok(Some(value)) => {
+                        let value = git2::AttrValue::from_string(Some(value));
+                        match value {
+                            git2::AttrValue::Unspecified => return false,
+                            git2::AttrValue::False => return false,
+                            _ => {}
+                        }
+                    }
+                    Ok(None) => return false,
+                    Err(_) => return false,
+                }
+            }
+
+            true
+        })
     }
 }
 
@@ -79,11 +102,11 @@ impl FilterTree for git2::Repository {
 fn filter_tree_recursive<'a, F>(
     repo: &'a Repository,
     tree: &'a git2::Tree<'a>,
-    prefix: Option<&str>,
+    prefix: Option<&Path>,
     predicate: &F,
 ) -> Result<git2::Tree<'a>, Error>
 where
-    F: Fn(&Repository, &str) -> bool,
+    F: Fn(&Repository, &Path) -> bool,
 {
     let mut builder = repo.treebuilder(None)?;
 
@@ -93,8 +116,8 @@ where
         };
 
         let full_path = match prefix {
-            Some(subdir) => format!("{}/{}", subdir, name),
-            None => name.to_string(),
+            Some(subdir) => subdir.join(name),
+            None => PathBuf::from(name.to_string()),
         };
 
         match entry.kind() {
