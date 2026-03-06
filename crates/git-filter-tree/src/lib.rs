@@ -1,8 +1,9 @@
-//! Filter Git tree objects by glob patterns or gitattributes.
+//! Filter Git tree objects by glob patterns, gitattributes, or a custom predicate.
 //!
 //! This crate exposes the [`FilterTree`] trait, implemented on
 //! [`git2::Repository`], which produces a new tree containing only the entries
-//! that match either a set of **glob patterns** or a set of **gitattributes**.
+//! that match either a set of **glob patterns**, a set of **gitattributes**,
+//! or an arbitrary **predicate function**.
 //! Trees are walked recursively; patterns are matched against full paths from
 //! the tree root.
 //!
@@ -42,6 +43,27 @@
 //!
 //! All listed attributes must be set (AND semantics). Entries with an
 //! attribute explicitly unset (`-export`) or unspecified are excluded.
+//!
+//! # Filter by Predicate
+//!
+//! ```no_run
+//! use git_filter_tree::FilterTree as _;
+//! use std::path::Path;
+//!
+//! let repo = git2::Repository::open_from_env()?;
+//! let tree = repo.head()?.peel_to_tree()?;
+//!
+//! // Keep only files whose path contains "generated".
+//! let filtered = repo.filter_by_predicate(&tree, |_repo, path| {
+//!     path.to_str().is_some_and(|s| s.contains("generated"))
+//! })?;
+//! println!("tree sha: {}", filtered.id());
+//! # Ok::<(), Box<dyn std::error::Error>>(())
+//! ```
+//!
+//! The predicate receives the repository and the full path of each blob entry
+//! relative to the tree root. Subtrees are included as long as at least one
+//! descendant matches.
 pub mod exe;
 use std::path::{Path, PathBuf};
 
@@ -64,13 +86,25 @@ pub trait FilterTree {
     /// Filters tree entries by gitattributes and returns a new tree with contents filtered.
     /// Recursively walks the tree and matches attributes against full paths from the tree root.
     ///
-    /// The `attributes` type is an array of string slices. For attributes which haves values,
+    /// The `attributes` type is an array of string slices. For attributes which have values,
     /// not simply set or unset, use typical `.gitattributes` syntax.
     fn filter_by_attributes<'a>(
         &'a self,
         tree: &'a git2::Tree<'a>,
         attributes: &[&str],
     ) -> Result<git2::Tree<'a>, Error>;
+
+    /// Filters tree entries using an arbitrary predicate and returns a new tree.
+    /// Recursively walks the tree; the predicate is called for each blob entry
+    /// with the repository and the entry's full path relative to the tree root.
+    /// Subtrees are retained as long as at least one descendant matches.
+    fn filter_by_predicate<'a, F>(
+        &'a self,
+        tree: &'a git2::Tree<'a>,
+        predicate: F,
+    ) -> Result<git2::Tree<'a>, Error>
+    where
+        F: Fn(&git2::Repository, &Path) -> bool;
 }
 
 impl FilterTree for git2::Repository {
@@ -107,6 +141,17 @@ impl FilterTree for git2::Repository {
 
         // Recursively filter the tree
         filter_tree_recursive(self, tree, None, &|_repo, path| matcher.is_match(path))
+    }
+
+    fn filter_by_predicate<'a, F>(
+        &'a self,
+        tree: &'a git2::Tree<'a>,
+        predicate: F,
+    ) -> Result<git2::Tree<'a>, Error>
+    where
+        F: Fn(&git2::Repository, &Path) -> bool,
+    {
+        filter_tree_recursive(self, tree, None, &predicate)
     }
 
     fn filter_by_attributes<'a>(
@@ -730,6 +775,125 @@ mod tests {
         assert_eq!(filtered.len(), 1);
         assert!(filtered.get_name("notes.txt").is_some());
         assert!(filtered.get_name("docs").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_predicate_always_false_returns_empty_tree() -> Result<(), Error> {
+        let (repo, temp_path) = setup_test_repo();
+        let tree = create_test_tree(&repo)?;
+
+        let filtered = repo.filter_by_predicate(&tree, |_repo, _path| false)?;
+        assert_eq!(filtered.len(), 0);
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_predicate_always_true_returns_full_tree() -> Result<(), Error> {
+        let (repo, temp_path) = setup_test_repo();
+        let tree = create_test_tree(&repo)?;
+
+        let filtered = repo.filter_by_predicate(&tree, |_repo, _path| true)?;
+        assert_eq!(filtered.len(), tree.len());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_predicate_matches_on_path() -> Result<(), Error> {
+        let (repo, temp_path) = setup_test_repo();
+        let tree = create_test_tree(&repo)?;
+
+        // Keep only entries whose path contains "file"
+        let filtered = repo.filter_by_predicate(&tree, |_repo, path| {
+            path.to_str().is_some_and(|s| s.contains("file"))
+        })?;
+
+        assert_eq!(filtered.len(), 2);
+        assert!(filtered.get_name("file1.txt").is_some());
+        assert!(filtered.get_name("file2.rs").is_some());
+        assert!(filtered.get_name("test.md").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_predicate_receives_full_nested_path() -> Result<(), Error> {
+        let (repo, temp_path) = setup_test_repo();
+
+        let blob = repo.blob(b"content")?;
+
+        let mut sub_builder = repo.treebuilder(None)?;
+        sub_builder.insert("deep.rs", blob, 0o100644)?;
+        sub_builder.insert("deep.txt", blob, 0o100644)?;
+        let sub_oid = sub_builder.write()?;
+
+        let mut root_builder = repo.treebuilder(None)?;
+        root_builder.insert("top.rs", blob, 0o100644)?;
+        root_builder.insert("src", sub_oid, 0o040000)?;
+        let tree = repo.find_tree(root_builder.write()?)?;
+
+        let seen_paths = std::cell::RefCell::new(Vec::new());
+        let _ = repo.filter_by_predicate(&tree, |_repo, path| {
+            seen_paths
+                .borrow_mut()
+                .push(path.to_str().unwrap().to_string());
+            true
+        });
+        let seen_paths = seen_paths.into_inner();
+
+        assert!(seen_paths.contains(&"top.rs".to_string()));
+        assert!(seen_paths.contains(&"src/deep.rs".to_string()));
+        assert!(seen_paths.contains(&"src/deep.txt".to_string()));
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_predicate_prunes_subtree_when_no_descendants_match() -> Result<(), Error> {
+        let (repo, temp_path) = setup_test_repo();
+
+        let blob = repo.blob(b"content")?;
+
+        let mut sub_builder = repo.treebuilder(None)?;
+        sub_builder.insert("a.txt", blob, 0o100644)?;
+        sub_builder.insert("b.txt", blob, 0o100644)?;
+        let sub_oid = sub_builder.write()?;
+
+        let mut root_builder = repo.treebuilder(None)?;
+        root_builder.insert("keep.rs", blob, 0o100644)?;
+        root_builder.insert("docs", sub_oid, 0o040000)?;
+        let tree = repo.find_tree(root_builder.write()?)?;
+
+        // Only keep .rs files — docs/ subtree should be pruned entirely
+        let filtered = repo.filter_by_predicate(&tree, |_repo, path| {
+            path.extension().is_some_and(|e| e == "rs")
+        })?;
+
+        assert_eq!(filtered.len(), 1);
+        assert!(filtered.get_name("keep.rs").is_some());
+        assert!(filtered.get_name("docs").is_none());
+
+        cleanup_test_repo(temp_path);
+        Ok(())
+    }
+
+    #[test]
+    fn test_filter_by_predicate_empty_tree_stays_empty() -> Result<(), Error> {
+        let (repo, temp_path) = setup_test_repo();
+
+        let tree = repo.find_tree(repo.treebuilder(None)?.write()?)?;
+        assert_eq!(tree.len(), 0);
+
+        let filtered = repo.filter_by_predicate(&tree, |_repo, _path| true)?;
+        assert_eq!(filtered.len(), 0);
 
         cleanup_test_repo(temp_path);
         Ok(())
