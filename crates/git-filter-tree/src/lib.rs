@@ -849,8 +849,13 @@ mod tests {
         let seen_paths = seen_paths.into_inner();
 
         assert!(seen_paths.contains(&"top.rs".to_string()));
-        assert!(seen_paths.contains(&"src/deep.rs".to_string()));
-        assert!(seen_paths.contains(&"src/deep.txt".to_string()));
+
+        assert!(
+            seen_paths.contains(&("src".to_string() + std::path::MAIN_SEPARATOR_STR + "deep.rs"))
+        );
+        assert!(
+            seen_paths.contains(&("src".to_string() + std::path::MAIN_SEPARATOR_STR + "deep.txt"))
+        );
 
         cleanup_test_repo(temp_path);
         Ok(())
