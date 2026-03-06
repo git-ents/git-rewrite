@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.2.0...git-filter-tree-v0.3.0) (2026-03-06)
+
+
+### Features
+
+* Add new method `filter_by_predicate` ([8f80da2](https://github.com/git-ents/git-rewrite/commit/8f80da2e0c6ca119e726003a82680ae7b31fe1f5))
+
+
+### Bug Fixes
+
+* Remove OS-specific path separator from unit test ([7c39642](https://github.com/git-ents/git-rewrite/commit/7c39642b6ec0f24a7e5179d9d009f027b3704b38))
+
 ## [0.2.0](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.1.0...git-filter-tree-v0.2.0) (2026-03-04)
 
 
