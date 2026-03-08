@@ -851,12 +851,8 @@ mod tests {
 
         assert!(seen_paths.contains(&"top.rs".to_string()));
 
-        assert!(
-            seen_paths.contains(&("src".to_string() + std::path::MAIN_SEPARATOR_STR + "deep.rs"))
-        );
-        assert!(
-            seen_paths.contains(&("src".to_string() + std::path::MAIN_SEPARATOR_STR + "deep.txt"))
-        );
+        assert!(seen_paths.contains(&"src/deep.rs".to_string()));
+        assert!(seen_paths.contains(&"src/deep.txt".to_string()));
 
         cleanup_test_repo(temp_path);
         Ok(())
