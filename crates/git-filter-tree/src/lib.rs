@@ -65,7 +65,7 @@
 //! relative to the tree root. Subtrees are included as long as at least one
 //! descendant matches.
 pub mod exe;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 pub use git2::{Error, Repository};
 use globset::GlobSetBuilder;
@@ -189,7 +189,7 @@ impl FilterTree for git2::Repository {
 fn filter_tree_recursive<'a, F>(
     repo: &'a Repository,
     tree: &'a git2::Tree<'a>,
-    prefix: Option<&Path>,
+    prefix: Option<&str>,
     predicate: &F,
 ) -> Result<git2::Tree<'a>, Error>
 where
@@ -202,10 +202,11 @@ where
             return Err(Error::from_str("name has invalid UTF-8"));
         };
 
-        let full_path = match prefix {
-            Some(subdir) => subdir.join(name),
-            None => PathBuf::from(name.to_string()),
+        let git_path = match prefix {
+            Some(dir) => format!("{}/{}", dir, name),
+            None => name.to_string(),
         };
+        let full_path = Path::new(&git_path);
 
         match entry.kind() {
             Some(git2::ObjectType::Blob) => {
@@ -216,7 +217,7 @@ where
             Some(git2::ObjectType::Tree) => {
                 let subtree = entry.to_object(repo)?.peel_to_tree()?;
                 let filtered_subtree =
-                    filter_tree_recursive(repo, &subtree, Some(&full_path), predicate)?;
+                    filter_tree_recursive(repo, &subtree, Some(&git_path), predicate)?;
                 if !filtered_subtree.is_empty() {
                     builder.insert(name, filtered_subtree.id(), entry.filemode())?;
                 }
