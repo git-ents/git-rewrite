@@ -1,6 +1,6 @@
 [package]
 name = "git-rewrite"
-version = "0.1.2"
+version = "0.1.3"
 description = "Filter and rewrite history, trees, and (eventually) blobs."
 repository = "https://github.com/git-ents/git-filter"
 documentation = "https://docs.rs/git-rewrite"
@@ -25,4 +25,4 @@ clap.workspace = true
 clap_mangen.workspace = true
 git2.workspace = true
 globset.workspace = true
-git-filter-tree = { version = "0.3.0", path = "../git-filter-tree" }
+git-filter-tree = { version = "0.3.1", path = "../git-filter-tree" }

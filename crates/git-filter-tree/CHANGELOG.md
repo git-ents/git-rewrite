@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.3.0...git-filter-tree-v0.3.1) (2026-03-08)
+
+
+### Bug Fixes
+
+* Use Git-compatible path separators ([c385840](https://github.com/git-ents/git-rewrite/commit/c3858401529c5fe7f66945abf7a6ad84bdac6366))
+
 ## [0.3.0](https://github.com/git-ents/git-rewrite/compare/git-filter-tree-v0.2.0...git-filter-tree-v0.3.0) (2026-03-06)
 
 
